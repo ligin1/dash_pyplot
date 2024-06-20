@@ -16,6 +16,8 @@ import plotly.graph_objs as go
 
 # Create the Dash app
 app = dash.Dash(__name__)
+server=app.server
+
 india_geojson = 'gadm41_IND_1.json'#
 india_gdf = gpd.read_file(india_geojson)
 states_to_remove = ['DadraandNagarHaveli', 'Lakshadweep', 'DamanandDiu', 'Puducherry']
@@ -140,8 +142,8 @@ def update_graph(state):
     return fig
 
 
-# In[ ]:
-
+if __name__ == '__main__':
+    app.run_server(debug=True)
 
 
 
