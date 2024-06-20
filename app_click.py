@@ -17,6 +17,7 @@ import json
 
 # Create the Dash app
 app = dash.Dash(__name__)
+server=app.server
 india_geojson = 'gadm41_IND_1.json'
 india_gdf = gpd.read_file(india_geojson)
 states_to_remove = ['DadraandNagarHaveli', 'Lakshadweep', 'DamanandDiu', 'Puducherry']
