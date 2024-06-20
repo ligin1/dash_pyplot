@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[7]:
 
 
 import dash
@@ -63,6 +63,19 @@ def calculate_extreme_days(state):
 # Create a dictionary with state names as keys and number of extreme days as values
 extreme_days_dict = {state: calculate_extreme_days(state) for state in unique_states['NAME_1']}
 
+# Define custom colorscale
+custom_colorscale = [
+    [0, 'rgb(255,255,204)'],
+    [1/8, 'rgb(255,237,160)'],
+    [2/8, 'rgb(254,217,118)'],
+    [3/8, 'rgb(254,178,76)'],
+    [4/8, 'rgb(253,141,60)'],
+    [5/8, 'rgb(252,78,42)'],
+    [6/8, 'rgb(227,26,28)'],
+    [7/8, 'rgb(189,0,38)'],
+    [1, 'rgb(128,0,38)']
+]
+
 # Define the layout
 app.layout = html.Div([
     html.H1("Temperature Time Series Dashboard"),
@@ -79,12 +92,15 @@ def display_map(_):
         geojson=india_geojson_f,
         locations=list(extreme_days_dict.keys()),
         z=list(extreme_days_dict.values()),
-        colorscale="Jet",
+        colorscale=custom_colorscale,
         marker_line_width=0.5,
         showscale=True,
         featureidkey="properties.NAME_1",
         hoverinfo='location+z',
-        colorbar_title="Days > 99th Percentile"
+        colorbar=dict(
+            title="Days > 99th Percentile",
+            tickvals=list(range(20, 181, 20))
+        )
     )
 
     map_layout = go.Layout(
@@ -95,7 +111,18 @@ def display_map(_):
             projection_scale=10  # Adjust this scale to fit India better
         ),
         clickmode='event+select',
-        dragmode=False  # Disable zooming and panning
+        dragmode=False,  # Disable zooming and panning
+        annotations=[
+            dict(
+                x=0.5,
+                y=-0.1,
+                xref='paper',
+                yref='paper',
+                text='Created by: Ligin and Lijo\nData Source: CPC NOAA',
+                showarrow=False,
+                font=dict(size=14)
+            )
+        ]
     )
 
     return go.Figure(data=[map_trace], layout=map_layout)
@@ -190,7 +217,7 @@ def update_graph(clickData):
                 y=-0.4,
                 xref='paper',
                 yref='paper',
-                text='Created by: Ligin Joseph\nData Source: India',
+                text='Created by: Ligin and Lijo;\nData Source: CPC NOAA',
                 showarrow=False,
                 font=dict(size=14)
             )
