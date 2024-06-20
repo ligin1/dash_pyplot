@@ -1,4 +1,5 @@
 gunicorn
+netcdf4
 xarray
 regionmask
 dash
