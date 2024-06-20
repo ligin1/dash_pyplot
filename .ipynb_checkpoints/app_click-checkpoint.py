@@ -1,31 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
-
-
-india_geojson = 'gadm41_IND_1.json'
-india_gdf = gpd.read_file(india_geojson)
-
-
-# In[9]:
-
-
-unique_states
-
-
-# In[10]:
-
-
-JammuandKashmir
-
-
-# In[5]:
-
-
-#!/usr/bin/env python
-# coding: utf-8
-
 # In[7]:
 
 
@@ -105,7 +80,6 @@ custom_colorscale = [
 # Define the layout
 app.layout = html.Div([
     html.H1("Temperature Time Series Dashboard"),
-    html.P("Caution: The displayed boundaries may not accurately represent political boundaries."),
     dcc.Graph(id='map-graph'),
     dcc.Graph(id='temp-graph')
 ])
@@ -244,7 +218,7 @@ def update_graph(clickData):
                 y=-0.4,
                 xref='paper',
                 yref='paper',
-                text='Created by: Ligin and Lijo; \n Data Source: CPC NOAA',
+                text='Created by: Ligin and Lijo;\nData Source: CPC NOAA',
                 showarrow=False,
                 font=dict(size=14)
             )
@@ -256,13 +230,6 @@ def update_graph(clickData):
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8060)
-
-
-# In[ ]:
-
-
-
-
 
 
 # In[ ]:
