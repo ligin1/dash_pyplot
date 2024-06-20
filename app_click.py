@@ -4,31 +4,6 @@
 # In[6]:
 
 
-india_geojson = 'gadm41_IND_1.json'
-india_gdf = gpd.read_file(india_geojson)
-
-
-# In[9]:
-
-
-unique_states
-
-
-# In[10]:
-
-
-JammuandKashmir
-
-
-# In[5]:
-
-
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[7]:
-
-
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
