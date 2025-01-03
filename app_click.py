@@ -1,9 +1,12 @@
+<<<<<<< HEAD
 #!/usr/bin/env python
 # coding: utf-8
 
 # In[6]:
 
 
+=======
+>>>>>>> e9bf7077514d4d8504c83ea8515e2580ed357ee1
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
