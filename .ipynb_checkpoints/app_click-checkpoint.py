@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[7]:
+# In[6]:
 
 
 import dash
@@ -29,7 +29,7 @@ india_geojson_f = json.loads(india_gdf_f.to_json())
 
 # Load datasets
 ds_tmean_ref = xr.open_dataset('precomputed_mean.nc')
-ds_tmean = xr.open_dataset('CPC_tmean_18june2024.nc')
+ds_tmean = xr.open_dataset('CPC_tmean_2024.nc')
 per_90 = xr.open_dataset('precomputed_percentiles.nc')
 
 # Calculate the number of days exceeding the 99th percentile for each state
@@ -38,15 +38,15 @@ def calculate_extreme_days(state):
     mask = regionmask.mask_3D_geopandas(st, ds_tmean['lon'], ds_tmean['lat'])
     tmean_mask = ds_tmean.where(mask).mean(['lat', 'lon'])
     tmean_clim_mask = ds_tmean_ref.sel(state=state)
-    tmean_mask = tmean_mask.sel(time=slice('2023-06-16', '2024-06-15')).squeeze()
+    tmean_mask = tmean_mask.sel(time=slice('2024-01-01', '2024-12-31')).squeeze()
     percentile_90 = per_90.sel(state=state).__xarray_dataarray_variable__
 
-    start_date = np.datetime64('2023-06-16')
-    day_of_year_start = (start_date - np.datetime64('2023-01-01')).astype('timedelta64[D]').astype(int)
+    start_date = np.datetime64('2024-01-01')
+    day_of_year_start = (start_date - np.datetime64('2024-01-01')).astype('timedelta64[D]').astype(int)
 
     p90_shifted_values = np.roll(percentile_90.values, -day_of_year_start)
     length_of_p90 = len(percentile_90.dayofyear)
-    new_time_index = pd.date_range(start='2023-06-16', periods=length_of_p90, freq='D')
+    new_time_index = pd.date_range(start='2024-01-01', periods=length_of_p90, freq='D')
     p90_clim_ind_s = xr.DataArray(p90_shifted_values, coords={'time': new_time_index}, dims=['time'])
 
     tmean_shifted_values = np.roll(tmean_mask.__xarray_dataarray_variable__.values, -day_of_year_start)
@@ -80,6 +80,7 @@ custom_colorscale = [
 # Define the layout
 app.layout = html.Div([
     html.H1("Temperature Time Series Dashboard"),
+    html.P("Caution: The displayed boundaries may not accurately represent political boundaries."),
     dcc.Graph(id='map-graph'),
     dcc.Graph(id='temp-graph')
 ])
@@ -218,7 +219,7 @@ def update_graph(clickData):
                 y=-0.4,
                 xref='paper',
                 yref='paper',
-                text='Created by: Ligin and Lijo;\nData Source: CPC NOAA',
+                text='Created by: Ligin and Lijo; \n Data Source: CPC NOAA',
                 showarrow=False,
                 font=dict(size=14)
             )
@@ -230,6 +231,13 @@ def update_graph(clickData):
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8060)
+
+
+# In[ ]:
+
+
+
+
 
 
 # In[ ]:
